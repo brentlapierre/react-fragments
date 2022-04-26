@@ -4,8 +4,8 @@ import ArrowRight from '../Icon/ArrowRight'
 
 const BtnGroup = styled.div`
   position: absolute;
-  height: 100%;
   width: 100%;
+  height: 100%;
   top: 0;
   left: 0;
   display: flex;
@@ -13,15 +13,15 @@ const BtnGroup = styled.div`
 `
 
 const Btn = styled.div`
-  height: 100%;
   width: 40px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
   &:hover {
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: ${(props: { disabled: boolean }) => props.disabled ? 'red' : 'rgba(0, 0, 0, 0.7)'};
     color: #fff;
   }
 `
@@ -30,15 +30,39 @@ const Icon = styled.span`
   transform: scale(1.5);
 `
 
-const Controls = () => (
-  <BtnGroup>
-    <Btn>
-      <Icon><ArrowLeft /></Icon>
-    </Btn>
-    <Btn>
-      <Icon><ArrowRight /></Icon>
-    </Btn>
-  </BtnGroup>
-)
+type ControlsOptions = {
+  index: number,
+  setIndex: (index: number) => void,
+  totalImages: number,
+}
+
+const Controls = ({ index, setIndex, totalImages }: ControlsOptions) => {
+  function prevImage () {
+    index -= 1
+    setIndex(index)
+  }
+
+  function nextImage () {
+    index += 1
+    setIndex(index)
+  }
+
+  return (
+    <BtnGroup>
+      <Btn
+        disabled={ index === 0 ? true : false }
+        onClick={ index !== 0 ? () => prevImage() : () => null }
+      >
+        <Icon><ArrowLeft /></Icon>
+      </Btn>
+      <Btn
+        disabled={ (index + 1) === totalImages ? true : false }
+        onClick={ (index + 1) !== totalImages ? () => nextImage() : () => null }
+      >
+        <Icon><ArrowRight /></Icon>
+      </Btn>
+    </BtnGroup>
+  )
+}
 
 export default Controls

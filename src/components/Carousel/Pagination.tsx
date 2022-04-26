@@ -13,8 +13,8 @@ const NavGroup = styled.div`
 `
 
 const Switch = styled.span`
-  height: 9px;
   width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: ${(props: { active?: any }) => props.active ? '#2d73e3' : '#ccc'};
 
@@ -23,11 +23,29 @@ const Switch = styled.span`
   }
 `
 
-const Pagination = () => (
-  <NavGroup>
-    <Switch active />
-    <Switch />
-  </NavGroup>
-)
+type PaginationOptions = {
+  index: number,
+  setIndex: (index: number) => void,
+  totalImages: number,
+}
+
+const Pagination = ({ index, setIndex, totalImages }: PaginationOptions) => {
+  function setImage (i: number) {
+    index = i
+    setIndex(index)
+  }
+
+  return (
+    <NavGroup>
+      {[...Array(totalImages)].map((x, i) =>
+        <Switch
+          active={ index === i ? true : false }
+          onClick={ () => setImage(i) }
+          key={i}
+        />
+      )}
+    </NavGroup>
+  )
+}
 
 export default Pagination
