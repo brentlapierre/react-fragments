@@ -1,0 +1,52 @@
+{
+  "name": "react-fragments",
+  "version": "1.0.0",
+  "description": "Various useful mini React components",
+  "keywords": [
+    "react-fragments",
+    "react",
+    "component",
+    "image",
+    "image-carousel",
+    "image-slider",
+    "carousel",
+    "slider"
+  ],
+  "files": ["dist"],
+  "main": "./dist/react-fragments.umd.js",
+  "module": "./dist/react-fragments.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/react-fragments.es.js",
+      "require": "./dist/react-fragments.umd.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "author": "Brent Lapierre <brent@vtuberlabs.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brentlapierre/react-fragments.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brentlapierre/react-fragments/issues"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.27",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@types/styled-components": "^5.1.25",
+    "@vitejs/plugin-react": "^1.3.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.5"
+  }
+}
