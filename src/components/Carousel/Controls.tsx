@@ -18,12 +18,14 @@ const Btn = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  color: #777;
 
+  ${(props: { disabled: boolean }) => props.disabled ? '' : `
   &:hover {
     cursor: pointer;
-    background-color: ${(props: { disabled: boolean }) => props.disabled ? 'red' : 'rgba(0, 0, 0, 0.7)'};
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
-  }
+  }`}
 `
 
 const Icon = styled.span`

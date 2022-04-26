@@ -1,4 +1,4 @@
-import React, { Children, useState } from 'react'
+import React, { Children, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Controls from './Controls'
 import Pagination from './Pagination'
@@ -21,6 +21,7 @@ const ImageContainer = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background-color: #fff;
 `
 
 const Images = styled.div`
@@ -41,7 +42,9 @@ type CarouselProps = {
   width: number,
   height: number,
   controls?: boolean,
+  autoplay?: number,
   pagination?: boolean,
+  position?: string,
   children: React.ReactNode,
 }
 
@@ -49,11 +52,27 @@ const Carousel: React.FC<CarouselProps> = ({
   width,
   height,
   controls,
+  autoplay,
   pagination,
+  position = 'bottom',
   children,
 }) => {
   const [index, setIndex] = useState(0)
   let totalImages: number = Children.count(children)
+
+  useEffect(() => {
+    let timer: any
+
+    if (autoplay !== undefined && autoplay > 0) {
+      timer = setInterval(() => {
+        setIndex(index => (index + 1) < totalImages ? index + 1 : 0)
+      }, autoplay * 1000)
+    }
+
+    return () => {
+      clearInterval(timer)
+    }
+  }, [])
 
   return (
     <Container
@@ -66,7 +85,14 @@ const Carousel: React.FC<CarouselProps> = ({
         </Images>
       </ImageContainer>
       { controls ? <Controls index={index} setIndex={setIndex} totalImages={totalImages} /> : '' }
-      { pagination ? <Pagination index={index} setIndex={setIndex} totalImages={totalImages} /> : '' }
+      { pagination ?
+        <Pagination
+          index={index}
+          setIndex={setIndex}
+          totalImages={totalImages}
+          position={position}
+        /> : ''
+      }
     </Container>
   )
 }
