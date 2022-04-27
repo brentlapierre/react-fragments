@@ -3,17 +3,18 @@ import styled from 'styled-components'
 import Controls from './Controls'
 import Pagination from './Pagination'
 
-type ElementSize = {
+type Container = {
   width: number,
   height: number,
+  borderColor: string,
 }
 
 const Container = styled.div`
   position: relative;
-  width: ${(props: ElementSize) => `${props.width}px`};
-  height: ${(props: ElementSize) => `${props.height}px`};
+  width: ${(props: Container) => `${props.width}px`};
+  height: ${(props: Container) => `${props.height}px`};
   padding: 4px;
-  background-color: #ccc;
+  background-color: ${(props: Container) => props.borderColor};
   border-radius: 4px;
 `
 
@@ -41,24 +42,35 @@ const Images = styled.div`
 type CarouselProps = {
   width: number,
   height: number,
+  accentColor: string,
+  border?: {
+    color: string,
+  },
   controls?: boolean,
   autoplay?: number,
   pagination?: boolean,
-  position?: string,
+  position?: 'top' | 'bottom' | 'left' | 'right',
+  maxLength?: number,
   children: React.ReactNode,
 }
 
 const Carousel: React.FC<CarouselProps> = ({
   width,
   height,
+  accentColor = '#2d73e3',
+  border = {
+    color: 'transparent',
+  },
   controls,
   autoplay,
   pagination,
   position = 'bottom',
+  maxLength = 10,
   children,
 }) => {
   const [index, setIndex] = useState(0)
   let totalImages: number = Children.count(children)
+  let borderColor: string = border.color
 
   useEffect(() => {
     let timer: any
@@ -78,19 +90,29 @@ const Carousel: React.FC<CarouselProps> = ({
     <Container
       width={width}
       height={height}
+      borderColor={borderColor}
     >
       <ImageContainer>
         <Images right={width * index}>
           { children }
         </Images>
       </ImageContainer>
-      { controls ? <Controls index={index} setIndex={setIndex} totalImages={totalImages} /> : '' }
+      { controls ?
+        <Controls
+          index={index}
+          setIndex={setIndex}
+          totalImages={totalImages}
+          accentColor={accentColor}
+        /> : ''
+      }
       { pagination ?
         <Pagination
           index={index}
           setIndex={setIndex}
           totalImages={totalImages}
           position={position}
+          maxLength={maxLength}
+          accentColor={accentColor}
         /> : ''
       }
     </Container>

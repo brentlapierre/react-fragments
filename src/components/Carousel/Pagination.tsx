@@ -5,8 +5,6 @@ const NavGroup = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  gap: 8px;
   z-index: 1;
 
   ${(props: { position: string }) => props.position === 'top' ? `
@@ -16,19 +14,35 @@ const NavGroup = styled.div`
   ${(props: { position: string }) => props.position === 'bottom' ? `
     bottom: 0;
     padding-bottom: 14px;
+    align-items: flex-end;
   ` : ''};
   ${(props: { position: string }) => props.position === 'left' ? `
-    height: 100%;
     top: 0;
+    left: 0;
+    height: 100%;
     padding-left: 14px;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: flex-start;
   ` : ''};
   ${(props: { position: string }) => props.position === 'right' ? `
-    height: 100%;
     top: 0;
     right: 0;
+    height: 100%;
     padding-right: 14px;
+    flex-direction: column;
+    align-items: flex-end;
+  ` : ''};
+`
+
+const Switches = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  ${(props: { position: string }) => props.position === 'left' ? `
+    flex-direction: column;
+  ` : ''};
+  ${(props: { position: string }) => props.position === 'right' ? `
     flex-direction: column;
   ` : ''};
 `
@@ -36,22 +50,48 @@ const NavGroup = styled.div`
 const Switch = styled.span`
   width: 8px;
   height: 8px;
+  display: flex;
   border-radius: 50%;
-  background-color: ${(props: { active?: any }) => props.active ? '#2d73e3' : '#ccc'};
+  background-color: ${(props: {
+    active?: boolean,
+    dynamic?: boolean,
+    accentColor: string,
+  }) => props.active ? props.accentColor : '#ccc'};
 
   &:hover {
-    cursor: ${(props: { active?: any }) => props.active ? 'default' : 'pointer'};
+    cursor: ${(props: { active?: boolean, dynamic?: boolean }) => props.active ? 'default' : 'pointer'};
   }
+
+  ${(props: { active?: boolean, dynamic?: boolean }) => props.dynamic ? `
+  :first-child, :last-child {
+    width: 3px;
+    height: 3px;
+  }
+
+  :nth-child(2), :nth-last-child(2) {
+    width: 6px;
+    height: 6px;
+  }
+  ` : ''};
 `
 
 type PaginationOptions = {
   index: number,
   setIndex: (index: number) => void,
   totalImages: number,
-  position: string,
+  position: 'top' | 'bottom' | 'left' | 'right',
+  maxLength: number,
+  accentColor: string,
 }
 
-const Pagination = ({ index, setIndex, totalImages, position }: PaginationOptions) => {
+const Pagination = ({
+  index,
+  setIndex,
+  totalImages,
+  position,
+  maxLength,
+  accentColor,
+}: PaginationOptions) => {
   function setImage (i: number) {
     index = i
     setIndex(index)
@@ -61,13 +101,19 @@ const Pagination = ({ index, setIndex, totalImages, position }: PaginationOption
     <NavGroup
       position={position}
     >
-      {[...Array(totalImages)].map((x, i) =>
-        <Switch
-          active={ index === i ? true : false }
-          onClick={ () => setImage(i) }
-          key={i}
-        />
-      )}
+      <Switches
+        position={position}
+      >
+        {[...Array(maxLength < totalImages ? maxLength : totalImages)].map((x, i) =>
+          <Switch
+            active={ index === i ? true : false }
+            dynamic={ maxLength < totalImages ? true : false }
+            accentColor={accentColor}
+            onClick={ () => setImage(i) }
+            key={i}
+          />
+        )}
+      </Switches>
     </NavGroup>
   )
 }
