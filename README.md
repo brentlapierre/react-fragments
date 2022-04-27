@@ -25,3 +25,21 @@ npm install react-fragments
 ```bash
 yarn add react-fragments
 ```
+
+### Usage
+
+#### Image Carousel
+
+```tsx
+import { Carousel } from 'react-fragments'
+
+<Carousel
+  width={640}
+  height={360}
+  controls={true}
+  autoplay={5}
+  pagination={true}
+>
+  /* images here */
+</Carousel>
+```
