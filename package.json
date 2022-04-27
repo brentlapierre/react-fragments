@@ -24,7 +24,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "npm run build"
   },
   "author": "Brent Lapierre <brent@vtuberlabs.com>",
   "license": "MIT",
