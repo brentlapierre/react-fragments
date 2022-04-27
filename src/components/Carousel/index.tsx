@@ -42,7 +42,7 @@ const Images = styled.div`
 type CarouselProps = {
   width: number,
   height: number,
-  accentColor: string,
+  accentColor?: string,
   border?: {
     color: string,
   },
